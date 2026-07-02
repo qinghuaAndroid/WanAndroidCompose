@@ -24,4 +24,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "WanAndroidCompose"
 include(":app")
- 
+include(":library")
