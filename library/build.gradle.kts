@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.android.room3)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 room3 {
@@ -26,7 +27,9 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -61,6 +64,8 @@ dependencies {
     api(libs.androidx.lifecycle.viewmodel.savedstate)
     // ViewModel integration with Navigation3
     api(libs.androidx.lifecycle.viewmodel.navigation3)
+    // optional - ProcessLifecycleOwner provides a lifecycle for the whole application process
+    api(libs.androidx.lifecycle.process)
     // Annotation processor
     ksp(libs.androidx.lifecycle.compiler)
 
@@ -72,14 +77,13 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
-    //jetpack - startup
-    api(libs.androidx.startup.runtime)
-
     //jetpack - room3
     implementation(libs.androidx.room3.runtime)
     ksp(libs.androidx.room3.compiler)
 
+    // splitties
+    api(libs.splitties.appctx)
+
     //MMKV(tencent出品，类似sp)
     api(libs.mmkv)
-
 }

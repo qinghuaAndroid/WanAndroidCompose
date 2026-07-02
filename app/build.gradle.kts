@@ -55,6 +55,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
+    implementation(project(":library"))
+
     // Coil An image loading library for Android and Compose Multiplatform.
     implementation(libs.coil.compose)
     implementation(libs.coil.network.okhttp)
@@ -62,4 +64,7 @@ dependencies {
     // ** jetpack hilt **
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+
+    //jetpack - startup
+    implementation(libs.androidx.startup.runtime)
 }
