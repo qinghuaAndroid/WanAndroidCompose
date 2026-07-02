@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.devtools.ksp)
+    alias(libs.plugins.hilt.android)
 }
 
 android {
@@ -45,7 +47,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
@@ -53,4 +54,12 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    // Coil An image loading library for Android and Compose Multiplatform.
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
+    // ** jetpack hilt **
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 }
