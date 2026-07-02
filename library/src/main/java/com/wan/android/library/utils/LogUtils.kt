@@ -1,7 +1,7 @@
 package com.wan.android.library.utils
 
 import android.util.Log
-import com.wan.baselib.BuildConfig
+import com.wan.android.library.BuildConfig
 
 /**
  * Log工具类

@@ -1,8 +1,23 @@
 package com.wan.android.library.network.service
 
+import com.wan.android.library.bean.ArticleEntity
+import com.wan.android.library.bean.BannerEntity
+import com.wan.android.library.bean.HotSearchEntity
+import com.wan.android.library.bean.IntegralRecordEntity
+import com.wan.android.library.bean.MyArticleEntity
+import com.wan.android.library.bean.NavigationEntity
+import com.wan.android.library.bean.RankEntity
+import com.wan.android.library.bean.SystemListEntity
+import com.wan.android.library.bean.TabEntity
 import com.wan.android.library.bean.User
+import com.wan.android.library.bean.UserInfoEntity
 import com.wan.android.library.network.HttpResult
-import retrofit2.http.*
+import retrofit2.http.Field
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * @author cy
@@ -117,7 +132,7 @@ interface ApiService {
      * 排名
      */
     @GET("/coin/rank/{pageNum}/json")
-    fun getRank(@Path("pageNum") pageNum: Int): Observable<HttpResult<RankEntity>>
+    fun getRank(@Path("pageNum") pageNum: Int): HttpResult<RankEntity>
 
     /**
      * 获取个人信息
@@ -147,7 +162,7 @@ interface ApiService {
      * 删除我分享的文章
      */
     @POST("/lg/user_article/delete/{id}/json")
-    fun deleteMyArticle(@Path("id") id: Int): Observable<HttpResult<Any>>
+    fun deleteMyArticle(@Path("id") id: Int): HttpResult<Any>
 
     /**
      * 分享文章
@@ -156,7 +171,7 @@ interface ApiService {
     fun shareArticle(
         @Query("title") title: String,
         @Query("link") link: String
-    ): Observable<HttpResult<Any>>
+    ): HttpResult<Any>
 
     /**
      * 获取收藏文章数据

@@ -8,6 +8,7 @@ import com.franmontiel.persistentcookiejar.persistence.SharedPrefsCookiePersisto
 import com.wan.android.library.BuildConfig
 import com.wan.android.library.network.interceptor.HeaderInterceptor
 import com.wan.android.library.network.interceptor.QueryParameterInterceptor
+import com.wan.android.library.network.service.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
