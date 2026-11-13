@@ -4,26 +4,25 @@ agp = "9.5.1"
 banner = "2.2.3"
 baserecyclerviewadapterhelper = "3.0.7"
 circleimageview = "3.1.0"
-coilVersion = "2.4.0"
+coilVersion = "2.7.0"
 color = "3.3.0"
 constraintlayout = "2.2.2"
 coreKtx = "1.19.1"
-glideVersion = "4.16.0"
+glideVersion = "5.0.9"
 hiltVersion = "2.60.1"
 junit = "4.13.2"
 junitVersion = "1.3.0"
 espressoCore = "3.7.0"
 labelsview = "1.6.5"
-leakcanary = "2.9.1"
+leakcanary = "2.14"
 library = "2.1.0"
-libraryBase = "3.0.0"
 lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.8.0"
 kotlin = "2.3.21"
 ksp = "2.3.13"
 composeBom = "2026.02.01"
 appcompat = "1.8.0"
-lifecycleVersion = "2.8.7"
+lifecycleVersion = "2.11.0"
 loadsir = "1.3.8"
 logger = "2.2.0"
 material = "1.14.0"
@@ -33,15 +32,15 @@ okhttpBom = "5.5.1"
 persistentcookiejar = "v1.0.1"
 photoview = "2.3.0"
 recyclerview = "1.4.0"
-retrofitVersion = "2.11.0"
+retrofitVersion = "3.0.0"
 room = "2.8.5"
 rxandroid = "3.0.2"
 rxbinding = "4.0.0"
 rxjava = "3.1.12"
 rxlifecycleComponents = "4.0.2"
-realmKotlinPlugin = "1.16.0"
 splittiesVersion = "3.0.0"
 startupRuntime = "1.2.0"
+swiperefreshlayout = "1.2.0"
 
 [libraries]
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofitVersion" }
@@ -83,7 +82,6 @@ ksp = { module = "com.github.bumptech.glide:ksp", version.ref = "glideVersion" }
 labelsview = { module = "com.github.donkingliang:LabelsView", version.ref = "labelsview" }
 leakcanary-android = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "leakcanary" }
 library = { module = "com.kyleduo.switchbutton:library", version.ref = "library" }
-library-base = { module = "io.realm.kotlin:library-base", version.ref = "libraryBase" }
 lifecycle = { module = "com.afollestad.material-dialogs:lifecycle", version.ref = "color" }
 loadsir = { module = "com.kingja.loadsir:loadsir", version.ref = "loadsir" }
 logger = { module = "com.orhanobut:logger", version.ref = "logger" }
@@ -108,6 +106,7 @@ splitties-dimensions = { module = "com.louiscad.splitties:splitties-dimensions",
 splitties-fragments = { module = "com.louiscad.splitties:splitties-fragments", version.ref = "splittiesVersion" }
 splitties-resources = { module = "com.louiscad.splitties:splitties-resources", version.ref = "splittiesVersion" }
 splitties-views = { module = "com.louiscad.splitties:splitties-views", version.ref = "splittiesVersion" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -118,5 +117,4 @@ androidx-navigation-safeargs = { id = "androidx.navigation.safeargs.kotlin", ver
 kotlin-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltVersion" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-realm-kotlin = { id = "io.realm.kotlin", version.ref = "realmKotlinPlugin" }
 

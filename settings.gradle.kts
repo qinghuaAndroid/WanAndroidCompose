@@ -7,10 +7,12 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        // Central requests return missing artifacts on this network; prefer its mirror.
+        maven("https://maven.aliyun.com/repository/central")
         mavenCentral()
         gradlePluginPortal()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-        maven(url = "https://jitpack.io")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://jitpack.io")
     }
 }
 plugins {
@@ -20,10 +22,12 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        // Resolve metadata and JARs from the same working Central mirror.
+        maven("https://maven.aliyun.com/repository/central")
         mavenCentral()
-        maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
-        maven(url = "https://jitpack.io")
-        maven(url = "https://maven.aliyun.com/nexus/content/groups/public/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
+        maven("https://jitpack.io")
+        maven("https://maven.aliyun.com/nexus/content/groups/public/")
     }
 }
 

@@ -8,7 +8,6 @@ import androidx.activity.viewModels
 import androidx.appcompat.widget.SearchView
 import  com.example.myapplication.R
 import  com.example.myapplication.bean.HotSearchEntity
-import  com.example.myapplication.bean.SearchHistoryBean
 import  com.example.myapplication.constant.Const
 import  com.example.myapplication.databinding.ActivitySearchBinding
 import  com.example.core.ext.collectOnLifecycle
@@ -77,16 +76,16 @@ class SearchActivity : BaseVMActivity<SearchViewModel, ActivitySearchBinding>() 
         }
     }
 
-    private fun showHistoryData(historyBeans: List<SearchHistoryBean>) {
+    private fun showHistoryData(histories: List<String>) {
         binding.historyLabelsView.run {
-            setLabels(historyBeans) { _, _, data ->
-                data.key
+            setLabels(histories) { _, _, data ->
+                data
             }
             setOnLabelClickListener { _, _, position ->
-                onLabelClick(historyBeans[position].key)
+                onLabelClick(histories[position])
             }
             setOnLabelLongClickListener { _, _, position ->
-                onLabelLongClick(historyBeans[position].key)
+                onLabelLongClick(histories[position])
                 true
             }
         }
@@ -123,6 +122,5 @@ class SearchActivity : BaseVMActivity<SearchViewModel, ActivitySearchBinding>() 
 
     override fun onDestroy() {
         super.onDestroy()
-        searchViewModel.closeRealm()
     }
 }

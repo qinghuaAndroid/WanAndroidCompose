@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type=" com.example.myapplication.bean.CoinInfo" />
+            type="com.example.myapplication.bean.CoinInfo" />
 
     </data>
 

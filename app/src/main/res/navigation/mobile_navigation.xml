@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name=" com.example.myapplication.ui.home.HomeFragment"
+        android:name="com.example.myapplication.ui.home.HomeFragment"
         android:label="@string/tab_1"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_system"
-        android:name=" com.example.myapplication.ui.system.SystemListFragment"
+        android:name="com.example.myapplication.ui.system.SystemListFragment"
         android:label="@string/tab_2"
         tools:layout="@layout/fragment_system_list" />
 
     <fragment
         android:id="@+id/navigation_official"
-        android:name=" com.example.myapplication.ui.tab.TabFragment"
+        android:name="com.example.myapplication.ui.tab.TabFragment"
         android:label="@string/tab_3"
         tools:layout="@layout/fragment_tab">
         <argument
@@ -31,13 +31,13 @@
 
     <fragment
         android:id="@+id/navigation_navigation"
-        android:name=" com.example.myapplication.ui.navigation.NavigationFragment"
+        android:name="com.example.myapplication.ui.navigation.NavigationFragment"
         android:label="@string/tab_4"
         tools:layout="@layout/fragment_system_list" />
 
     <fragment
         android:id="@+id/navigation_project"
-        android:name=" com.example.myapplication.ui.tab.TabFragment"
+        android:name="com.example.myapplication.ui.tab.TabFragment"
         android:label="@string/tab_5"
         tools:layout="@layout/fragment_tab">
         <argument

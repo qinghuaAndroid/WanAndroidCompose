@@ -7,7 +7,7 @@
 
         <variable
             name="data"
-            type=" com.example.myapplication.bean.IntegralRecordEntity.DatasBean" />
+            type="com.example.myapplication.bean.IntegralRecordEntity.DatasBean" />
 
     </data>
 

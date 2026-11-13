@@ -89,7 +89,6 @@ dependencies {
     api(libs.coil.svg)
 
     // Persistence and dependency injection
-    api(libs.library.base)
     api(libs.hilt.android)
     ksp(libs.hilt.compiler)
     api(libs.mmkv)
