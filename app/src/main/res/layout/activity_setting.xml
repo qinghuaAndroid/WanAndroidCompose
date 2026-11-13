@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.setting.SettingActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/viewBackground">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvClear"
+            style="@style/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/ripple_bg"
+            android:drawableEnd="@mipmap/arrow_right"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_left"
+            android:paddingEnd="@dimen/padding_right"
+            android:text="清除缓存"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+        <TextView
+            android:id="@+id/tvClearValue"
+            style="@style/text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="50dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/tvClear"
+            app:layout_constraintRight_toRightOf="@+id/tvClear"
+            app:layout_constraintTop_toTopOf="@+id/tvClear"
+            tools:text="1.23M" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvVersion"
+            style="@style/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="@drawable/ripple_bg"
+            android:drawableEnd="@mipmap/arrow_right"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_left"
+            android:paddingEnd="@dimen/padding_right"
+            android:text="版本"
+            app:layout_constraintTop_toBottomOf="@id/tvClear" />
+
+        <TextView
+            android:id="@+id/tvVersionValue"
+            style="@style/text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="50dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/tvVersion"
+            app:layout_constraintRight_toRightOf="@+id/tvVersion"
+            app:layout_constraintTop_toTopOf="@+id/tvVersion"
+            tools:text="v 0.0.1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvColor"
+            style="@style/text_1"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/ripple_bg"
+            android:drawableEnd="@mipmap/arrow_right"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/padding_left"
+            android:paddingEnd="@dimen/padding_right"
+            android:text="主题颜色"
+            app:layout_constraintTop_toBottomOf="@+id/tvVersion" />
+
+        <TextView
+            style="@style/text_2"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:layout_marginEnd="50dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/tvColor"
+            app:layout_constraintRight_toRightOf="@+id/tvColor"
+            app:layout_constraintTop_toTopOf="@+id/tvColor" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
