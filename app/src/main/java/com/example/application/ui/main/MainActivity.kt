@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.lifecycle.Lifecycle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.Insets
 import androidx.core.view.updateLayoutParams
@@ -255,8 +256,10 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     override fun subscribeEvent() {
-        SharedFlowBus.on<Int>( com.example.common.constant.Const.THEME_COLOR)
-            .observe(this) { setThemeColor() }
+        SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
+            .collectOnLifecycle(this, Lifecycle.State.CREATED) {
+                setThemeColor()
+            }
     }
 
     private fun setThemeColor() {

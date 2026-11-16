@@ -21,7 +21,6 @@ abstract class BaseFragment<B : ViewDataBinding> : RxFragment(), CoroutineScope 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initData(savedInstanceState)
-        subscribeEvent()
         loadData()
     }
 
@@ -41,6 +40,7 @@ abstract class BaseFragment<B : ViewDataBinding> : RxFragment(), CoroutineScope 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initView(view)
+        subscribeEvent()
     }
 
     protected abstract fun attachLayoutRes(): Int

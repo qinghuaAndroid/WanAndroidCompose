@@ -3,6 +3,7 @@ package  com.example.application.ui.tab
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
 import com.google.android.material.tabs.TabLayoutMediator
 import  com.example.application.R
 import  com.example.application.adapter.TabPagerAdapter
@@ -43,8 +44,10 @@ class TabFragment : BaseVMFragment<TabViewModel, FragmentTabBinding>() {
     }
 
     override fun subscribeEvent() {
-        SharedFlowBus.on<Int>( com.example.common.constant.Const.THEME_COLOR)
-            .observe(this) { setThemeColor() }
+        SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
+            .collectOnLifecycle(viewLifecycleOwner, Lifecycle.State.CREATED) {
+                setThemeColor()
+            }
     }
 
     private fun setThemeColor() {
