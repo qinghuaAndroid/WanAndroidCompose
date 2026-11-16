@@ -1,75 +1,78 @@
-package  com.example.application.ui.tab
+package com.example.application.ui.tab
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import com.google.android.material.tabs.TabLayoutMediator
-import  com.example.application.R
-import  com.example.application.adapter.TabPagerAdapter
-import  com.example.application.bean.TabEntity
-import  com.example.application.constant.Const
-import  com.example.application.databinding.FragmentTabBinding
-import  com.example.core.ext.collectOnLifecycle
-import  com.example.core.ext.getThemeColor
-import  com.example.core.ext.showToast
-import  com.example.core.flowbus.SharedFlowBus
-import  com.example.core.mvvm.BaseVMFragment
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.example.application.bean.TabEntity
+import com.example.application.constant.Const
+import com.example.core.ext.getThemeColor
+import com.example.core.ext.showToast
+import com.example.core.flowbus.SharedFlowBus
 import dagger.hilt.android.AndroidEntryPoint
-import splitties.views.backgroundColor
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 /**
- * @author cy
- * Create at 2020/4/2.
+ * Compose 标签页容器；文章列表暂时复用现有的 TabListFragment。
  */
 @AndroidEntryPoint
-class TabFragment : BaseVMFragment<TabViewModel, FragmentTabBinding>() {
+class TabFragment : Fragment() {
 
     private val tabViewModel by viewModels<TabViewModel>()
+    private val tabs = MutableStateFlow<List<TabEntity>>(emptyList())
+    private val themeColor = MutableStateFlow(0)
+    private val type: Int? get() = arguments?.getInt(Const.TYPE)
 
-    private var type: Int? = null
-
-    override fun attachLayoutRes(): Int = R.layout.fragment_tab
-
-    override fun initData(savedInstanceState: Bundle?) {
-        type = arguments?.getInt(Const.TYPE)
-    }
-
-    override fun initView(view: View) {
-        setThemeColor()
-    }
-
-    override fun loadData() {
-        type?.let { tabViewModel.getTabList(it) }
-    }
-
-    override fun subscribeEvent() {
-        SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
-            .collectOnLifecycle(viewLifecycleOwner, Lifecycle.State.CREATED) {
-                setThemeColor()
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = ComposeView(requireContext()).apply {
+        // 使用固定 ID，让 rememberSaveable 的分页状态可以随 View 恢复。
+        id = com.example.application.R.id.tab_compose_view
+        setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+        themeColor.value = getThemeColor()
+        setContent {
+            val tabList = tabs.collectAsStateWithLifecycle().value
+            val color = themeColor.collectAsStateWithLifecycle().value
+            TabScreenTheme(themeColor = Color(color)) {
+                TabScreen(tabs = tabList) { tab, selected ->
+                    TabListPage(tab = tab, type = type, selected = selected)
+                }
             }
-    }
-
-    private fun setThemeColor() {
-        binding.tabLayout.backgroundColor = getThemeColor()
-    }
-
-    override fun subscribeUi() {
-        tabViewModel.uiState.collectOnLifecycle(viewLifecycleOwner) {
-            if (it.showLoading) showProgressDialog() else dismissProgressDialog()
-            it.showSuccess?.let { tabList -> showList(tabList) }
-            it.showError?.let { errorMsg -> showToast(errorMsg) }
         }
     }
 
-    private fun showList(list: MutableList<TabEntity>) {
-        val titleList = mutableListOf<String>()
-        list.forEach {
-            it.name?.let { it1 -> titleList.add(it1) }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // uiState 没有 replay，先订阅再发请求，避免快速响应丢失。
+        viewLifecycleOwner.lifecycleScope.launch(start = CoroutineStart.UNDISPATCHED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                tabViewModel.uiState.collect { state ->
+                    state.showSuccess?.let { tabs.value = it.toList() }
+                    state.showError?.let { showToast(it) }
+                }
+            }
         }
-        binding.viewPager.adapter = TabPagerAdapter(this, list, type)
-        TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            tab.text = titleList[position]
-        }.attach()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
+                SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
+                    .collect { themeColor.value = getThemeColor() }
+            }
+        }
+        if (tabs.value.isEmpty()) {
+            type?.let { tabViewModel.getTabList(it) }
+        }
     }
 }
