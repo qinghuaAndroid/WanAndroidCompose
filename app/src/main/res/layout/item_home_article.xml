@@ -6,7 +6,7 @@
 
         <variable
             name="article"
-            type="com.example.myapplication.bean.ArticleEntity.DatasBean" />
+            type="com.example.application.bean.ArticleEntity.DatasBean" />
 
         <variable
             name="collected"

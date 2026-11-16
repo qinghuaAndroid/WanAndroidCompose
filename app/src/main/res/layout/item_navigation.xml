@@ -6,11 +6,11 @@
 
         <variable
             name="navigationEntity"
-            type="com.example.myapplication.bean.NavigationEntity" />
+            type="com.example.application.bean.NavigationEntity" />
 
         <variable
             name="presenter"
-            type="com.example.myapplication.ui.navigation.NavigationPresenter" />
+            type="com.example.application.ui.navigation.NavigationPresenter" />
     </data>
 
     <LinearLayout

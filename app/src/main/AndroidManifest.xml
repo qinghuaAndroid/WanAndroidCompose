@@ -27,7 +27,7 @@
             android:exported="false"
             tools:node="merge">
             <meta-data
-                android:name="com.example.myapplication.provider.WanAppInitializer"
+                android:name="com.example.application.provider.WanAppInitializer"
                 android:value="androidx.startup" />
         </provider>
 
