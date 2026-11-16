@@ -14,6 +14,8 @@ import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.trello.rxlifecycle4.components.support.RxAppCompatActivity
 import com.example.core.R
 import com.example.core.ext.actionBarHeight
@@ -59,7 +61,22 @@ abstract class BaseActivity<B : ViewDataBinding> : RxAppCompatActivity(),
         val insets5 = Insets.max(insets1, insets4)
         println("最终: ${insets5.left}, ${insets5.top}, ${insets5.right}, ${insets5.bottom}")
         dispatchWindowInsets(insets5)
+        dispatchWindowInsets(supportFragmentManager, insets5)
         return WindowInsetsCompat.CONSUMED
+    }
+
+    private fun dispatchWindowInsets(fragmentManager: FragmentManager, insets: Insets) {
+        fragmentManager.fragments.forEach { fragment ->
+            dispatchWindowInsets(fragment, insets)
+        }
+    }
+
+    private fun dispatchWindowInsets(fragment: Fragment, insets: Insets) {
+        if (fragment is BaseFragment<*>) {
+            fragment.dispatchWindowInsets(insets)
+        } else {
+            dispatchWindowInsets(fragment.childFragmentManager, insets)
+        }
     }
 
     protected open fun dispatchWindowInsets(insets: Insets) {
