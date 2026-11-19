@@ -21,7 +21,6 @@ import com.example.core.R
 import com.example.core.ext.actionBarHeight
 import com.example.core.ext.getThemeColor
 import com.example.core.utils.AutoDensityUtils
-import com.example.core.utils.StatusBarUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
@@ -111,7 +110,6 @@ abstract class BaseActivity<B : ViewDataBinding> : RxAppCompatActivity(),
 
     open fun initColor() {
         val themeColor = getThemeColor()
-        StatusBarUtil.setColor(this, themeColor, 0)
         if (this.supportActionBar != null) {
             this.supportActionBar?.setBackgroundDrawable(themeColor.toDrawable())
         }

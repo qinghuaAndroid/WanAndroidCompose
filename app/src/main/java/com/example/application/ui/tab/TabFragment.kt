@@ -13,11 +13,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.application.app.GlobalViewModel
 import com.example.application.bean.TabEntity
 import com.example.application.constant.Const
+import com.example.core.ext.appViewModels
 import com.example.core.ext.getThemeColor
 import com.example.core.ext.showToast
-import com.example.core.flowbus.SharedFlowBus
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,8 +29,8 @@ import kotlinx.coroutines.launch
  */
 @AndroidEntryPoint
 class TabFragment : Fragment() {
-
     private val tabViewModel by viewModels<TabViewModel>()
+    private val globalViewModel by appViewModels<GlobalViewModel>()
     private val tabs = MutableStateFlow<List<TabEntity>>(emptyList())
     private val themeColor = MutableStateFlow(0)
     private val type: Int? get() = arguments?.getInt(Const.TYPE)
@@ -67,8 +68,9 @@ class TabFragment : Fragment() {
         }
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.CREATED) {
-                SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
-                    .collect { themeColor.value = getThemeColor() }
+                globalViewModel.themeColor.collect {
+                    themeColor.value = getThemeColor()
+                }
             }
         }
         if (tabs.value.isEmpty()) {

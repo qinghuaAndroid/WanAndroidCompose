@@ -110,7 +110,7 @@ internal fun TabScreen(
     }
 }
 
-/** AndroidFragment 负责旧列表页的保存、恢复和移出组合时的清理。 */
+/** 使用 Fragment 保持现有 Hilt ViewModel 与分页生命周期边界，页面内容由 Compose 渲染。 */
 @Composable
 internal fun TabListPage(tab: TabEntity, type: Int?, selected: Boolean) {
     val arguments = remember(tab.id, tab.name, type) {

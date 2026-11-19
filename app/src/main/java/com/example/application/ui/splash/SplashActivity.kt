@@ -14,6 +14,7 @@ import  com.example.core.ext.showLongToast
 import com.example.application.ui.main.MainActivity
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * @author cy
@@ -27,9 +28,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun initData(savedInstanceState: Bundle?) {
         val launcher =
             registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
-                permissions.forEach { (t, u) ->
-                    println("$t: $u")
-                }
                 if (permissions.values.none { !it }) {
                     enterMain()
                 } else {
@@ -60,7 +58,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     private fun enterMain() {
         lifecycleScope.launch {
-            delay(2000)//delay函数是挂起，非阻塞的
+            delay(2000.milliseconds)//delay函数是挂起，非阻塞的
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
         }

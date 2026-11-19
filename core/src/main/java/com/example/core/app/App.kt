@@ -2,15 +2,23 @@ package com.example.core.app
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.ViewModelStore
+import androidx.lifecycle.ViewModelStoreOwner
 import com.bumptech.glide.Glide
 
-open class App : Application() {
+open class App : Application(), ViewModelStoreOwner {
+
+    private lateinit var mAppViewModelStore: ViewModelStore
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         //application初始化必须在这里， 不能放在onCreate中，
         //否则部分初始化依赖Application的第三方库初始化时会奔溃
-        application = this
+    }
+
+    override fun onCreate() {
+        super.onCreate()
+        mAppViewModelStore = ViewModelStore()
     }
 
     override fun onTrimMemory(level: Int) {
@@ -29,12 +37,6 @@ open class App : Application() {
         Glide.get(this).clearMemory()
     }
 
-    companion object {
-        private lateinit var application: Application
-
-        @JvmStatic
-        fun context(): Context {
-            return application.applicationContext
-        }
-    }
+    override val viewModelStore: ViewModelStore
+        get() = mAppViewModelStore
 }

@@ -1,10 +1,10 @@
 package  com.example.application.ui.navigation
 
 import android.content.Intent
-import com.example.common.constant.Const
-import com.example.core.app.App
-import  com.example.application.bean.ArticleEntity
+import android.view.View
+import com.example.application.bean.ArticleEntity
 import com.example.application.ui.browser.BrowserNormalActivity
+import com.example.common.constant.Const
 
 /**
  * @author cy
@@ -12,13 +12,16 @@ import com.example.application.ui.browser.BrowserNormalActivity
  */
 class NavigationPresenter {
 
-    val clickLabel: (ArticleEntity.DatasBean) -> Unit = { clickLabel(it) }
+    val clickLabel: (View, ArticleEntity.DatasBean) -> Unit =
+        { view, datasBean -> clickLabel(view, datasBean) }
 
-    private fun clickLabel(datasBean: ArticleEntity.DatasBean) {
-        App.context().startActivity(Intent(App.context(), BrowserNormalActivity::class.java).apply {
+    private fun clickLabel(view: View, datasBean: ArticleEntity.DatasBean) {
+        val context = view.context ?: return
+        val intent = Intent(context, BrowserNormalActivity::class.java).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             putExtra(Const.WEB_TITLE, datasBean.title)
             putExtra(Const.WEB_URL, datasBean.link)
-        })
+        }
+        context.startActivity(intent)
     }
 }

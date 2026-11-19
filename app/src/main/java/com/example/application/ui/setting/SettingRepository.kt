@@ -6,7 +6,7 @@ import  com.example.core.utils.CacheUtils
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
-class SettingRepository @Inject constructor(@ApplicationContext private val context: Context) :
+class SettingRepository @Inject constructor(@param:ApplicationContext private val context: Context) :
     BaseRepository() {
 
     fun getCacheSize(): String {

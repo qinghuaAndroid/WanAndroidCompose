@@ -7,42 +7,40 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.lifecycle.Lifecycle
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.Insets
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.navigation.NavigationView
-import  com.example.application.R
-import  com.example.application.app.GlobalViewModel
-import  com.example.application.app.WanApplication
-import  com.example.application.bean.CoinInfo
-import  com.example.application.databinding.ActivityMainBinding
-import  com.example.application.databinding.NavHeaderMainBinding
-import  com.example.application.ui.account.AccountViewModel
-import  com.example.core.ext.collectOnLifecycle
-import  com.example.core.ext.dp
-import  com.example.core.ext.getThemeColor
-import  com.example.core.ext.showToast
-import  com.example.core.flowbus.SharedFlowBus
-import  com.example.core.mvvm.BaseVMActivity
-import  com.example.core.utils.SettingUtil
-import com.example.common.auth.LoginState
-import com.example.login.ui.LoginActivity
+import com.example.application.R
+import com.example.application.app.GlobalViewModel
+import com.example.application.bean.CoinInfo
+import com.example.application.databinding.ActivityMainBinding
+import com.example.application.databinding.NavHeaderMainBinding
+import com.example.application.ui.account.AccountViewModel
 import com.example.application.ui.collect.CollectActivity
 import com.example.application.ui.integral.IntegralActivity
 import com.example.application.ui.question.QuestionActivity
 import com.example.application.ui.search.SearchActivity
 import com.example.application.ui.setting.SettingActivity
 import com.example.application.ui.share.ShareListActivity
+import com.example.common.auth.LoginState
+import com.example.core.ext.appViewModels
+import com.example.core.ext.collectOnLifecycle
+import com.example.core.ext.dp
+import com.example.core.ext.getThemeColor
+import com.example.core.ext.showToast
+import com.example.core.mvvm.BaseVMActivity
+import com.example.core.utils.SettingUtil
+import com.example.login.ui.LoginActivity
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationView
 import dagger.hilt.android.AndroidEntryPoint
 import splitties.views.backgroundColor
 import splitties.views.onClick
@@ -50,14 +48,7 @@ import splitties.views.onClick
 
 @AndroidEntryPoint
 class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>() {
-
-    private val globalViewModel by lazy {
-        ViewModelProvider(
-            application as WanApplication,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[GlobalViewModel::class.java]
-    }
-
+    private val globalViewModel by appViewModels<GlobalViewModel>()
     private val accountViewModel by viewModels<AccountViewModel>()
     private val mainViewModel by viewModels<MainViewModel>()
     private lateinit var navHeaderMainBinding: NavHeaderMainBinding
@@ -81,7 +72,7 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>() {
             val toggle = ActionBarDrawerToggle(
                 this@MainActivity,
                 this,
-                findViewById( com.example.core.R.id.toolbar), R.string.navigation_drawer_open,
+                findViewById(com.example.core.R.id.toolbar), R.string.navigation_drawer_open,
                 R.string.navigation_drawer_close
             )
             addDrawerListener(toggle)
@@ -256,10 +247,12 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>() {
     }
 
     override fun subscribeEvent() {
-        SharedFlowBus.with<Int>(com.example.common.constant.Const.THEME_COLOR)
-            .collectOnLifecycle(this, Lifecycle.State.CREATED) {
-                setThemeColor()
-            }
+        globalViewModel.themeColor.collectOnLifecycle(
+            this,
+            Lifecycle.State.CREATED
+        ) {
+            setThemeColor()
+        }
     }
 
     private fun setThemeColor() {
