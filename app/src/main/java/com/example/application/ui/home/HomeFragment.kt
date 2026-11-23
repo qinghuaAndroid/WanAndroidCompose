@@ -74,8 +74,8 @@ class HomeFragment : BaseVMFragment<ArticleViewModel, FragmentHomeBinding>() {
         curPosition = position
         when (view.id) {
             R.id.ivCollect -> {
-                if (datasBean.collect) collectViewModel.unCollect(datasBean.id)
-                else collectViewModel.collect(datasBean.id)
+                if (datasBean.collect) collectViewModel.unCollect(datasBean)
+                else collectViewModel.collect(datasBean)
             }
         }
     }
@@ -131,8 +131,8 @@ class HomeFragment : BaseVMFragment<ArticleViewModel, FragmentHomeBinding>() {
         }
         collectViewModel.uiState.collectOnLifecycle(viewLifecycleOwner) {
             if (it.showLoading) showProgressDialog() else dismissProgressDialog()
-            it.showSuccess?.let { collect ->
-                articleAdapter.data[curPosition].collect = collect
+            it.showSuccess?.let { datasBean ->
+                articleAdapter.data[curPosition].collect = datasBean.collect
                 articleAdapter.notifyItemChanged(curPosition)
             }
             it.showError?.let { errorMsg -> showToast(errorMsg) }

@@ -45,6 +45,9 @@
     <string name="hot_search">热门搜索</string>
     <string name="recent_search">最近搜索</string>
 
+    <string name="collect_back_content_description">返回</string>
+    <string name="collect_remove_content_description">取消收藏</string>
+
     <string name="github_projects_title">GitHub 开源项目</string>
     <string name="github_projects_empty">暂无可展示的公开仓库</string>
     <string name="github_projects_default_description">GitHub 未提供项目简介。</string>

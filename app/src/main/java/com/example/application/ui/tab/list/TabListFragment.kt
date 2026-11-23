@@ -147,9 +147,9 @@ private fun TabListScreen(
         }
         launch(start = CoroutineStart.UNDISPATCHED) {
             collectViewModel.uiState.collect { state ->
-                state.showSuccess?.let { collected ->
+                state.showSuccess?.let { datasBean ->
                     val index = articles.indexOfFirst { it.id == collectingArticleId }
-                    if (index >= 0) articles[index] = articles[index].copy(collect = collected)
+                    if (index >= 0) articles[index] = articles[index].copy(collect = datasBean.collect)
                     collectingArticleId = null
                 }
                 state.showError?.let { message ->
@@ -205,9 +205,9 @@ private fun TabListScreen(
                     onCollectClick = {
                         collectingArticleId = article.id
                         if (article.collect) {
-                            collectViewModel.unCollect(article.id)
+                            collectViewModel.unCollect(article)
                         } else {
-                            collectViewModel.collect(article.id)
+                            collectViewModel.collect(article)
                         }
                     }
                 )
