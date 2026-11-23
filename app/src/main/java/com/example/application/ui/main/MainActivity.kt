@@ -25,6 +25,7 @@ import com.example.application.databinding.NavHeaderMainBinding
 import com.example.application.ui.account.AccountViewModel
 import com.example.application.ui.collect.CollectActivity
 import com.example.application.ui.integral.IntegralActivity
+import com.example.application.ui.github.GitHubProjectsActivity
 import com.example.application.ui.question.QuestionActivity
 import com.example.application.ui.search.SearchActivity
 import com.example.application.ui.setting.SettingActivity
@@ -167,6 +168,10 @@ class MainActivity : BaseVMActivity<MainViewModel, ActivityMainBinding>() {
 
                 R.id.nav_question -> {
                     startActivity(Intent(this, QuestionActivity::class.java))
+                }
+
+                R.id.nav_github_projects -> {
+                    startActivity(Intent(this, GitHubProjectsActivity::class.java))
                 }
 
                 R.id.nav_setting -> {

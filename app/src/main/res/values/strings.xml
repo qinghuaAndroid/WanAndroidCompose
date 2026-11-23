@@ -34,6 +34,7 @@
     <string name="nav_my_score">我的积分</string>
     <string name="nav_girl">轻松一下</string>
     <string name="nav_question">问答</string>
+    <string name="nav_github_projects">GitHub 开源项目</string>
     <string name="nav_id">ID:</string>
     <string name="nav_grade">等级:</string>
     <string name="nav_rank">排名:</string>
@@ -43,4 +44,11 @@
     <string name="search_tint">发现更多干货</string>
     <string name="hot_search">热门搜索</string>
     <string name="recent_search">最近搜索</string>
+
+    <string name="github_projects_title">GitHub 开源项目</string>
+    <string name="github_projects_empty">暂无可展示的公开仓库</string>
+    <string name="github_projects_default_description">GitHub 未提供项目简介。</string>
+    <string name="github_projects_unknown_language">未标注语言</string>
+    <string name="github_projects_stars">%1$s Stars</string>
+    <string name="github_projects_updated">更新于 %1$s</string>
 </resources>

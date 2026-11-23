@@ -64,6 +64,8 @@
 
         <activity android:name=".ui.question.QuestionActivity" />
 
+        <activity android:name=".ui.github.GitHubProjectsActivity" />
+
     </application>
 
 </manifest>

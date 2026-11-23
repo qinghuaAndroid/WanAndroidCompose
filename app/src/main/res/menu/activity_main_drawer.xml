@@ -21,6 +21,11 @@
             android:title="@string/nav_question" />
 
         <item
+            android:id="@+id/nav_github_projects"
+            android:icon="@drawable/ic_code_white_24dp"
+            android:title="@string/nav_github_projects" />
+
+        <item
             android:id="@+id/nav_todo"
             android:icon="@drawable/ic_todo_white_24dp"
             android:title="@string/nav_todo" />
