@@ -21,16 +21,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="6dp"
+        android:layout_marginBottom="4dp"
         android:background="@drawable/article_card_background"
         android:clickable="true"
         android:clipToOutline="true"
-        android:elevation="2dp"
+        android:elevation="0dp"
         android:focusable="true"
         android:foreground="@drawable/article_card_ripple"
-        android:padding="16dp">
+        android:padding="14dp">
 
         <TextView
             android:id="@+id/tvTag"
@@ -69,8 +69,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivArticlePic"
-                android:layout_width="92dp"
-                android:layout_height="128dp"
+                android:layout_width="72dp"
+                android:layout_height="96dp"
                 android:visibility="@{TextUtils.isEmpty(article.envelopePic)? View.GONE : View.VISIBLE}"
                 app:imageUrl="@{article.envelopePic}"
                 app:layout_constraintStart_toStartOf="parent"
@@ -81,7 +81,7 @@
                 style="@style/text_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="0dp"
                 android:text="@{Html.fromHtml(article.title)}"
                 android:textStyle="bold"
@@ -94,8 +94,8 @@
                 style="@style/text_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="6dp"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:text="@{Html.fromHtml(article.desc)}"
@@ -111,7 +111,7 @@
             style="@style/text_3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:text="@{article.superChapterName}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clContent" />

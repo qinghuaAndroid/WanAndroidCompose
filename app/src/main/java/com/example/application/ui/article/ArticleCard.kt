@@ -1,6 +1,7 @@
 package com.example.application.ui.article
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -40,14 +41,14 @@ fun ArticleCard(
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .padding(horizontal = 12.dp, vertical = 4.dp)
             .clickable(onClick = onClick),
-        shape = RoundedCornerShape(12.dp),
+        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        border = CardDefaults.outlinedCardBorder()
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+        border = BorderStroke(1.dp, colorResource(CommonR.color.division_line))
     ) {
-        Column(Modifier.padding(16.dp)) {
+        Column(Modifier.padding(14.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -76,7 +77,7 @@ fun ArticleCard(
                 )
             }
 
-            Spacer(Modifier.height(10.dp))
+            Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
@@ -85,7 +86,7 @@ fun ArticleCard(
                     AsyncImage(
                         model = article.envelopePic,
                         contentDescription = null,
-                        modifier = Modifier.size(width = 92.dp, height = 128.dp),
+                        modifier = Modifier.size(width = 72.dp, height = 96.dp),
                         contentScale = ContentScale.Crop,
                         placeholder = painterResource(CoreR.mipmap.ic_default_img),
                         error = painterResource(CoreR.mipmap.ic_default_img)
@@ -95,27 +96,27 @@ fun ArticleCard(
                     Text(
                         text = article.title.fromHtml(),
                         color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 16.sp,
-                        lineHeight = 22.sp,
+                        fontSize = 15.sp,
+                        lineHeight = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        maxLines = 3,
+                        maxLines = if (article.envelopePic.isNullOrBlank()) 2 else 3,
                         overflow = TextOverflow.Ellipsis
                     )
                     if (!article.projectLink.isNullOrBlank() && !article.desc.isNullOrBlank()) {
                         Text(
                             text = article.desc.fromHtml(),
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            fontSize = 13.sp,
-                            lineHeight = 19.sp,
+                            fontSize = 12.sp,
+                            lineHeight = 17.sp,
                             maxLines = 3,
                             overflow = TextOverflow.Ellipsis,
-                            modifier = Modifier.padding(top = 8.dp)
+                            modifier = Modifier.padding(top = 6.dp)
                         )
                     }
                 }
             }
 
-            Row(Modifier.fillMaxWidth().padding(top = 12.dp)) {
+            Row(Modifier.fillMaxWidth().padding(top = 10.dp)) {
                 Text(
                     text = article.superChapterName.orEmpty(),
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
