@@ -1,22 +1,15 @@
 package com.example.application.ui.question
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -36,22 +29,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.text.HtmlCompat
-import coil.compose.AsyncImage
 import com.example.application.R
 import com.example.application.bean.ArticleEntity
 import com.example.application.ui.ArticleViewModel
-import com.example.application.ui.collect.CollectViewModel
+import com.example.application.ui.article.ArticleCard
 import com.example.core.ext.getThemeColor
 import com.example.core.ext.showToast
 import kotlinx.coroutines.CoroutineStart
@@ -78,11 +66,9 @@ internal fun QuestionScreenTheme(
         content()
     }
 }
-
 @Composable
 internal fun QuestionScreen(
     articleViewModel: ArticleViewModel,
-    collectViewModel: CollectViewModel,
     onOpenArticle: (ArticleEntity.DatasBean) -> Unit,
     onNavigateUp: () -> Unit
 ) {
@@ -92,7 +78,6 @@ internal fun QuestionScreen(
     var loadingMore by remember { mutableStateOf(false) }
     var loadMoreEnabled by remember { mutableStateOf(true) }
     var reachedEnd by remember { mutableStateOf(false) }
-    var collectingArticleId by remember { mutableStateOf<Int?>(null) }
 
     fun load(refresh: Boolean) {
         if (refresh) {
@@ -104,7 +89,7 @@ internal fun QuestionScreen(
         articleViewModel.getQuestionList(refresh)
     }
 
-    LaunchedEffect(articleViewModel, collectViewModel) {
+    LaunchedEffect(articleViewModel) {
         launch(start = CoroutineStart.UNDISPATCHED) {
             articleViewModel.uiState.collect { state ->
                 if (state.showLoading) refreshing = true
@@ -125,19 +110,6 @@ internal fun QuestionScreen(
                 if (state.showEnd) {
                     reachedEnd = true
                     loadingMore = false
-                }
-            }
-        }
-
-        launch(start = CoroutineStart.UNDISPATCHED) {
-            collectViewModel.uiState.collect { state ->
-                state.showSuccess?.let { datasBean ->
-                    articles.firstOrNull { it.id == datasBean.id }
-                        ?.collect = datasBean.collect
-                    collectingArticleId = null
-                }
-                state.showError?.let { message ->
-                    showToast(message)
                 }
             }
         }
@@ -182,18 +154,9 @@ internal fun QuestionScreen(
                 state = listState,
             ) {
                 items(articles, key = { it.id }) { article ->
-                    QuestionArticleRow(
+                    ArticleCard(
                         article = article,
-                        collecting = collectingArticleId == article.id,
-                        onOpenArticle = { onOpenArticle(article) },
-                        onCollect = {
-                            collectingArticleId = article.id
-                            if (article.collect) {
-                                collectViewModel.unCollect(article)
-                            } else {
-                                collectViewModel.collect(article)
-                            }
-                        }
+                        onClick = { onOpenArticle(article) }
                     )
                 }
                 if (loadingMore) {
@@ -213,7 +176,6 @@ internal fun QuestionScreen(
 
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun QuestionTopBar(onNavigateUp: () -> Unit) {
@@ -241,115 +203,3 @@ private fun QuestionTopBar(onNavigateUp: () -> Unit) {
         )
     )
 }
-
-@Composable
-private fun QuestionArticleRow(
-    article: ArticleEntity.DatasBean,
-    collecting: Boolean,
-    onOpenArticle: () -> Unit,
-    onCollect: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable(onClick = onOpenArticle)
-            .padding(start = 20.dp, top = 20.dp, end = 20.dp)
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = article.author.takeUnless { it.isNullOrBlank() }.orEmpty()
-                    .ifBlank { article.shareUser.orEmpty() },
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 11.sp,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-                modifier = Modifier.weight(1f)
-            )
-            Text(
-                text = article.niceDate.orEmpty(),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 11.sp
-            )
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 10.dp)
-        ) {
-            if (!article.envelopePic.isNullOrBlank()) {
-                AsyncImage(
-                    model = article.envelopePic,
-                    contentDescription = null,
-                    modifier = Modifier.size(width = 100.dp, height = 160.dp),
-                    contentScale = ContentScale.Crop,
-                    placeholder = painterResource(CoreR.mipmap.ic_default_img),
-                    error = painterResource(CoreR.mipmap.ic_default_img)
-                )
-                Spacer(Modifier.width(5.dp))
-            }
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = article.title.fromHtml(),
-                    color = MaterialTheme.colorScheme.onSurface,
-                    fontSize = 15.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                if (!article.projectLink.isNullOrBlank()) {
-                    Text(
-                        text = article.desc.fromHtml(),
-                        color = MaterialTheme.colorScheme.onSurface,
-                        fontSize = 15.sp,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(top = 10.dp)
-                    )
-                }
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 5.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = article.superChapterName.orEmpty(),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 11.sp,
-                modifier = Modifier.weight(1f)
-            )
-            Box(
-                modifier = Modifier.size(48.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                IconButton(
-                    onClick = onCollect,
-                    enabled = !collecting
-                ) {
-                    Image(
-                        painter = painterResource(if (article.collect) R.mipmap.article_collect else R.mipmap.article_un_collect),
-                        contentDescription = stringResource(R.string.collect_remove_content_description),
-                        modifier = Modifier
-                            .size(20.dp)
-                            .alpha(if (collecting) 0.5f else 1f)
-                    )
-                }
-                if (collecting) {
-                    CircularProgressIndicator(modifier = Modifier.size(18.dp), strokeWidth = 2.dp)
-                }
-            }
-        }
-        HorizontalDivider(
-            color = MaterialTheme.colorScheme.outlineVariant,
-            modifier = Modifier.padding(top = 20.dp)
-        )
-    }
-}
-
-private fun String?.fromHtml(): String =
-    HtmlCompat.fromHtml(orEmpty(), HtmlCompat.FROM_HTML_MODE_LEGACY).toString()

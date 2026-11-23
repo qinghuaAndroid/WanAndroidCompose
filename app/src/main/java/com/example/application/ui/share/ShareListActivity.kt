@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import  com.example.application.R
 import com.example.application.adapter.ArticleAdapter
 import  com.example.application.databinding.ActivityShareListBinding
 import  com.example.application.ui.ArticleViewModel
-import  com.example.application.ui.collect.CollectViewModel
 import  com.example.core.ext.collectOnLifecycle
 import  com.example.core.ext.showToast
 import  com.example.core.mvvm.BaseVMActivity
@@ -28,9 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class ShareListActivity : BaseVMActivity<ArticleViewModel, ActivityShareListBinding>() {
 
     private val articleViewModel by viewModels<ArticleViewModel>()
-    private val collectViewModel by viewModels<CollectViewModel>()
     private val articleAdapter by lazy { ArticleAdapter() }
-    private var curPosition = 0
 
     override fun subscribeUi() {
         articleViewModel.uiState.collectOnLifecycle(this) {
@@ -48,14 +44,6 @@ class ShareListActivity : BaseVMActivity<ArticleViewModel, ActivityShareListBind
             }
             if (it.showEnd) articleAdapter.loadMoreModule.loadMoreEnd()
             articleAdapter.loadMoreModule.isEnableLoadMore = it.isEnableLoadMore
-        }
-        collectViewModel.uiState.collectOnLifecycle(this) {
-            if (it.showLoading) showProgressDialog() else dismissProgressDialog()
-            it.showSuccess?.let { datasBean ->
-                articleAdapter.data[curPosition].collect = datasBean.collect
-                articleAdapter.notifyItemChanged(curPosition)
-            }
-            it.showError?.let { errorMsg -> showToast(errorMsg) }
         }
     }
 
@@ -82,8 +70,6 @@ class ShareListActivity : BaseVMActivity<ArticleViewModel, ActivityShareListBind
             loadMoreModule.isAutoLoadMore = true
             loadMoreModule.isEnableLoadMoreIfNotFullPage = false
             setOnItemClickListener(mOnItemClickListener)
-            addChildClickViewIds(R.id.ivCollect)
-            setOnItemChildClickListener(mOnItemChildClickListener)
         }
     }
 
@@ -93,17 +79,6 @@ class ShareListActivity : BaseVMActivity<ArticleViewModel, ActivityShareListBind
             putExtra(Const.WEB_TITLE, datasBean.title)
             putExtra(Const.WEB_URL, datasBean.link)
         })
-    }
-
-    private val mOnItemChildClickListener = OnItemChildClickListener { _, view, position ->
-        val datasBean = articleAdapter.data[position]
-        curPosition = position
-        when (view.id) {
-            R.id.ivCollect -> {
-                if (datasBean.collect) collectViewModel.unCollect(datasBean)
-                else collectViewModel.collect(datasBean)
-            }
-        }
     }
 
     override fun loadData() {

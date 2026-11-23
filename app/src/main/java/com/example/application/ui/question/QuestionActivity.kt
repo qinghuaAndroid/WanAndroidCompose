@@ -8,7 +8,6 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import com.example.application.ui.ArticleViewModel
 import com.example.application.ui.browser.BrowserNormalActivity
-import com.example.application.ui.collect.CollectViewModel
 import com.example.common.constant.Const
 import com.example.core.utils.AutoDensityUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class QuestionActivity : ComponentActivity() {
 
     private val articleViewModel by viewModels<ArticleViewModel>()
-    private val collectViewModel by viewModels<CollectViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AutoDensityUtils.setCustomDensity(this, application)
@@ -27,7 +25,6 @@ class QuestionActivity : ComponentActivity() {
             QuestionScreenTheme {
                 QuestionScreen(
                     articleViewModel = articleViewModel,
-                    collectViewModel = collectViewModel,
                     onOpenArticle = { article ->
                         startActivity(Intent(this, BrowserNormalActivity::class.java).apply {
                             putExtra(Const.WEB_TITLE, article.title)

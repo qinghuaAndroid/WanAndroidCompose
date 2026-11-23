@@ -15,7 +15,6 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class CollectActivity : ComponentActivity() {
     private val articleViewModel by viewModels<ArticleViewModel>()
-    private val collectViewModel by viewModels<CollectViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AutoDensityUtils.setCustomDensity(this, application)
@@ -25,7 +24,6 @@ class CollectActivity : ComponentActivity() {
             CollectScreenTheme {
                 CollectScreen(
                     articleViewModel = articleViewModel,
-                    collectViewModel = collectViewModel,
                     onOpenArticle = { article ->
                         startActivity(Intent(this, BrowserNormalActivity::class.java).apply {
                             putExtra(Const.WEB_TITLE, article.title)

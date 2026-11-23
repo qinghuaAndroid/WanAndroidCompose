@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.content.Intent
-import com.chad.library.adapter.base.listener.OnItemChildClickListener
 import com.chad.library.adapter.base.listener.OnItemClickListener
 import  com.example.application.R
 import com.example.application.adapter.ArticleAdapter
@@ -12,7 +11,6 @@ import  com.example.application.constant.Const
 import  com.example.application.databinding.ActivitySystemBinding
 import  com.example.application.ui.ArticleViewModel
 import com.example.application.ui.browser.BrowserNormalActivity
-import  com.example.application.ui.collect.CollectViewModel
 import  com.example.core.ext.collectOnLifecycle
 import  com.example.core.ext.showToast
 import  com.example.core.mvvm.BaseVMActivity
@@ -27,11 +25,9 @@ import dagger.hilt.android.AndroidEntryPoint
 class SearchListActivity : BaseVMActivity<ArticleViewModel, ActivitySystemBinding>() {
 
     private val articleViewModel by viewModels<ArticleViewModel>()
-    private val collectViewModel by viewModels<CollectViewModel>()
     private val articleAdapter by lazy { ArticleAdapter() }
 
     private val key: String by lazy { intent.getStringExtra(Const.SEARCH_KEY).orEmpty() }
-    private var curPosition = 0
 
     override fun subscribeUi() {
         articleViewModel.uiState.collectOnLifecycle(this) {
@@ -49,14 +45,6 @@ class SearchListActivity : BaseVMActivity<ArticleViewModel, ActivitySystemBindin
             }
             if (it.showEnd) articleAdapter.loadMoreModule.loadMoreEnd()
             articleAdapter.loadMoreModule.isEnableLoadMore = it.isEnableLoadMore
-        }
-        collectViewModel.uiState.collectOnLifecycle(this) {
-            if (it.showLoading) showProgressDialog() else dismissProgressDialog()
-            it.showSuccess?.let { datasBean ->
-                articleAdapter.data[curPosition].collect = datasBean.collect
-                articleAdapter.notifyItemChanged(curPosition)
-            }
-            it.showError?.let { errorMsg -> showToast(errorMsg) }
         }
     }
 
@@ -79,8 +67,6 @@ class SearchListActivity : BaseVMActivity<ArticleViewModel, ActivitySystemBindin
         articleAdapter.loadMoreModule.isAutoLoadMore = true
         articleAdapter.loadMoreModule.isEnableLoadMoreIfNotFullPage = false
         articleAdapter.setOnItemClickListener(mOnItemClickListener)
-        articleAdapter.addChildClickViewIds(R.id.ivCollect)
-        articleAdapter.setOnItemChildClickListener(mOnItemChildClickListener)
     }
 
     override fun loadData() {
@@ -99,14 +85,4 @@ class SearchListActivity : BaseVMActivity<ArticleViewModel, ActivitySystemBindin
         })
     }
 
-    private val mOnItemChildClickListener = OnItemChildClickListener { _, view, position ->
-        val datasBean = articleAdapter.data[position]
-        curPosition = position
-        when (view.id) {
-            R.id.ivCollect -> {
-                if (datasBean.collect) collectViewModel.unCollect(datasBean)
-                else collectViewModel.collect(datasBean)
-            }
-        }
-    }
 }
