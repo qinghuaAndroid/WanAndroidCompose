@@ -6,11 +6,11 @@
 
         <variable
             name="navigationEntity"
-            type="com.example.application.bean.NavigationEntity" />
+            type="com.wan.android.bean.NavigationEntity" />
 
         <variable
             name="presenter"
-            type="com.example.application.ui.navigation.NavigationPresenter" />
+            type="com.wan.android.ui.navigation.NavigationPresenter" />
     </data>
 
     <LinearLayout

@@ -6,11 +6,11 @@
 
         <variable
             name="systemListEntity"
-            type="com.example.application.bean.SystemListEntity" />
+            type="com.wan.android.bean.SystemListEntity" />
 
         <variable
             name="presenter"
-            type="com.example.application.ui.system.SystemListPresenter" />
+            type="com.wan.android.ui.system.SystemListPresenter" />
     </data>
 
     <LinearLayout

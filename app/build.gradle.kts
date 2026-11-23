@@ -8,14 +8,14 @@ plugins {
 }
 
 android {
-    namespace = "com.example.application"
+    namespace = "com.wan.android"
 
     compileSdk {
         version = release(37)
     }
 
     defaultConfig {
-        applicationId = "com.example.myapplication"
+        applicationId = "com.wan.compose"
         minSdk = 24
         targetSdk = 37
         versionCode = 1

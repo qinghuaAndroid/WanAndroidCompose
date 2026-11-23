@@ -1,0 +1,45 @@
+package  com.wan.android.ui.navigation
+
+import androidx.lifecycle.viewModelScope
+import  com.wan.android.bean.NavigationEntity
+import  com.wan.core.mvvm.BaseViewModel
+import  com.wan.core.mvvm.Result
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+/**
+ * @author cy
+ * Create at 2020/4/8.
+ */
+@HiltViewModel
+class NavigationViewModel @Inject constructor(private val mRepository: NavigationRepository) :
+    BaseViewModel() {
+
+    private val _uiState = MutableSharedFlow<NavigationUiState>()
+    val uiState: SharedFlow<NavigationUiState>
+        get() = _uiState
+
+    fun getNavigation() {
+        viewModelScope.launch {
+            val result = mRepository.getNavigation()
+            if (result is Result.Success) emitNavigationUiState(showSuccess = result.data)
+            else if (result is Result.Error) emitNavigationUiState(showError = result.exception.message)
+        }
+    }
+
+    private suspend fun emitNavigationUiState(
+        showError: String? = null,
+        showSuccess: MutableList<NavigationEntity>? = null
+    ) {
+        val navigationUiState = NavigationUiState(showError, showSuccess)
+        _uiState.emit(navigationUiState)
+    }
+}
+
+data class NavigationUiState(
+    val showError: String?,
+    val showSuccess: MutableList<NavigationEntity>?
+)

@@ -13,7 +13,7 @@ ksp {
 }
 
 android {
-    namespace = "com.example.login"
+    namespace = "com.wan.login"
 
     compileSdk {
         version = release(37)

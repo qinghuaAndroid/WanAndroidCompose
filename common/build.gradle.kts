@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.common"
+    namespace = "com.wan.common"
     compileSdk {
         version = release(37)
     }

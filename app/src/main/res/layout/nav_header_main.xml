@@ -6,7 +6,7 @@
 
         <variable
             name="data"
-            type="com.example.application.bean.CoinInfo" />
+            type="com.wan.android.bean.CoinInfo" />
 
     </data>
 

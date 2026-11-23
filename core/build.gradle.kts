@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.core"
+    namespace = "com.wan.core"
 
     compileSdk {
         version = release(37)

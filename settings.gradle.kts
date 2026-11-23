@@ -31,7 +31,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "My Application"
+rootProject.name = "WanAndroidCompose"
 include(":app")
 include(":core")
 include(":common")
