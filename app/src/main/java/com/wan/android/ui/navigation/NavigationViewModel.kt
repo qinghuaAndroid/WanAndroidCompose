@@ -1,12 +1,14 @@
-package  com.wan.android.ui.navigation
+package com.wan.android.ui.navigation
 
 import androidx.lifecycle.viewModelScope
-import  com.wan.android.bean.NavigationEntity
-import  com.wan.core.mvvm.BaseViewModel
-import  com.wan.core.mvvm.Result
+import com.wan.android.bean.NavigationEntity
+import com.wan.core.mvvm.BaseViewModel
+import com.wan.core.mvvm.Result
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,28 +20,39 @@ import javax.inject.Inject
 class NavigationViewModel @Inject constructor(private val mRepository: NavigationRepository) :
     BaseViewModel() {
 
-    private val _uiState = MutableSharedFlow<NavigationUiState>()
-    val uiState: SharedFlow<NavigationUiState>
-        get() = _uiState
+    private val _uiState = MutableStateFlow(NavigationUiState())
+    val uiState: StateFlow<NavigationUiState> = _uiState.asStateFlow()
 
     fun getNavigation() {
+        // 避免旋转屏幕或重复触发时发起多次请求。
+        if (_uiState.value.isLoading) return
         viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
             val result = mRepository.getNavigation()
-            if (result is Result.Success) emitNavigationUiState(showSuccess = result.data)
-            else if (result is Result.Error) emitNavigationUiState(showError = result.exception.message)
+            _uiState.update { state ->
+                when (result) {
+                    is Result.Success -> state.copy(
+                        isLoading = false,
+                        items = result.data.toList()
+                    )
+
+                    is Result.Error -> state.copy(
+                        isLoading = false,
+                        errorMessage = result.exception.message
+                    )
+                }
+            }
         }
     }
 
-    private suspend fun emitNavigationUiState(
-        showError: String? = null,
-        showSuccess: MutableList<NavigationEntity>? = null
-    ) {
-        val navigationUiState = NavigationUiState(showError, showSuccess)
-        _uiState.emit(navigationUiState)
+    /** 错误提示只消费一次，避免重组时重复弹出 Toast。 */
+    fun onErrorConsumed() {
+        _uiState.update { it.copy(errorMessage = null) }
     }
 }
 
 data class NavigationUiState(
-    val showError: String?,
-    val showSuccess: MutableList<NavigationEntity>?
+    val isLoading: Boolean = false,
+    val items: List<NavigationEntity> = emptyList(),
+    val errorMessage: String? = null
 )

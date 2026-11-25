@@ -48,6 +48,10 @@
     <string name="collect_back_content_description">返回</string>
     <string name="collect_remove_content_description">取消收藏</string>
 
+    <!-- Navigation -->
+    <string name="navigation_empty">暂无导航数据</string>
+    <string name="navigation_retry">重新加载</string>
+
     <string name="github_projects_title">GitHub 开源项目</string>
     <string name="github_projects_empty">暂无可展示的公开仓库</string>
     <string name="github_projects_default_description">GitHub 未提供项目简介。</string>
